@@ -5,7 +5,11 @@
 
 import argparse
 
-parser = argparse.ArgumentParser(description='Given files.')
+parser = argparse.ArgumentParser(description='Given files that contains a'
+                                             ' list of images, this script'
+                                             ' augments the image pair'
+                                             ' and writes the new image'
+                                             ' to the specified location.')
 parser.add_argument('-i', '--images', metavar='<path>', nargs=1,
                     required=True,
                     help='path to the root of the images directory'
