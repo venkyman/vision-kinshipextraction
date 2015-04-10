@@ -1,3 +1,8 @@
+# This script generates relationship permutations of 13 categories
+# (father_son, son_father, father_daughter, daughter_father, mother_son,
+# son_mother, mother_daughter, daughter_mother, sisters, brothers,
+# sister_brother, brother_sister, none) from the family 101 dataset
+
 # Define FaceImage class
 class FaceImage:
     def __init__(self, family_id, house_id, role_id, name, image_id):
@@ -24,15 +29,18 @@ parser.add_argument('-i', '--images', metavar='<path>', nargs=1,
                     required=True,
                     help='path to the root of the images directory'
                          ' (path to Family101_150x120)')
-parser.add_argument('-o', '--outputdir', metavar='<path>', nargs=1,
+parser.add_argument('-p', '--permdir', metavar='<path>', nargs=1,
                     required=True,
-                    help='path to the directory where output files are stored')
+                    help='path to the directory where perm files are stored')
 
 args = parser.parse_args()
+families = args.families[0]
+images_dir = args.images[0]
+perm_dir = args.permdir[0]
 
 # Parse text file into list of face images
 
-families_contents = open(args.families[0]).read()
+families_contents = open(families).read()
 
 face_images = []
 for entry in families_contents.split('\r\n'):
@@ -45,32 +53,32 @@ for entry in families_contents.split('\r\n'):
             house_id = split_entries[0]
             role_id = split_entries[1]
             name = split_entries[2]
-            images_path = join(args.images[0], family_id, name)
+            images_path = join(images_dir, family_id, name)
             # Some entries don't have images, ignore them
             if isdir(images_path):
-                for image_id in listdir(join(args.images[0], family_id, name)):
+                for image_id in listdir(join(images_dir, family_id, name)):
                     if not image_id.startswith('.'):
                         face_images.append(FaceImage(family_id, house_id,
                                                      role_id, name, image_id))
 
 # Prepare output files
 
-if not exists(args.outputdir[0]):
-    makedirs(args.outputdir[0])
+if not exists(perm_dir):
+    makedirs(perm_dir)
 
-father_son_file = open(join(args.outputdir[0], 'father_son'), 'w')
-son_father_file = open(join(args.outputdir[0], 'son_father'), 'w')
-father_daughter_file = open(join(args.outputdir[0], 'father_daughter'), 'w')
-daughter_father_file = open(join(args.outputdir[0], 'daughter_father'), 'w')
-mother_son_file = open(join(args.outputdir[0], 'mother_son'), 'w')
-son_mother_file = open(join(args.outputdir[0], 'son_mother'), 'w')
-mother_daughter_file = open(join(args.outputdir[0], 'mother_daughter'), 'w')
-daughter_mother_file = open(join(args.outputdir[0], 'daughter_mother'), 'w')
-sisters_file = open(join(args.outputdir[0], 'sisters'), 'w')
-brothers_file = open(join(args.outputdir[0], 'brothers'), 'w')
-sister_brother_file = open(join(args.outputdir[0], 'sister_brother'), 'w')
-brother_sister_file = open(join(args.outputdir[0], 'brother_sister'), 'w')
-none_file = open(join(args.outputdir[0], 'none'), 'w')
+father_son_file = open(join(perm_dir, 'father_son'), 'a')
+son_father_file = open(join(perm_dir, 'son_father'), 'a')
+father_daughter_file = open(join(perm_dir, 'father_daughter'), 'a')
+daughter_father_file = open(join(perm_dir, 'daughter_father'), 'a')
+mother_son_file = open(join(perm_dir, 'mother_son'), 'a')
+son_mother_file = open(join(perm_dir, 'son_mother'), 'a')
+mother_daughter_file = open(join(perm_dir, 'mother_daughter'), 'a')
+daughter_mother_file = open(join(perm_dir, 'daughter_mother'), 'a')
+sisters_file = open(join(perm_dir, 'sisters'), 'a')
+brothers_file = open(join(perm_dir, 'brothers'), 'a')
+sister_brother_file = open(join(perm_dir, 'sister_brother'), 'a')
+brother_sister_file = open(join(perm_dir, 'brother_sister'), 'a')
+none_file = open(join(perm_dir, 'none'), 'a')
 
 # Generate all relationship permutations and write to files
 
