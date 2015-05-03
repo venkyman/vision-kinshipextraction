@@ -29,13 +29,12 @@ with open(join(perm_dir, category), 'r') as category_file:
     for line in category_file:
         n_lines += 1
 
-print('Finished counting number of lines')###
-
 # Generate random permutation of unique line numbers
 
 from numpy.random import random_sample
 from numpy import unique
 import numpy
+from numpy.random import shuffle
 
 assert(sample_size < n_lines)
 
@@ -45,6 +44,7 @@ while len(lines_to_include) != sample_size:
     # multiple of the sample size
     lines_to_include = unique((random_sample(
         5 * sample_size) * (n_lines - 1)).astype(int))
+    shuffle(lines_to_include)
     lines_to_include = lines_to_include[:sample_size]
 
 lines_to_include = numpy.sort(lines_to_include).tolist()

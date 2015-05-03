@@ -3,6 +3,7 @@
 # son_mother, mother_daughter, daughter_mother, sisters, brothers,
 # sister_brother, brother_sister, none) from the family 101 dataset
 
+
 # Define FaceImage class
 class FaceImage:
     def __init__(self, family_id, house_id, role_id, name, image_id):
@@ -25,9 +26,9 @@ parser.add_argument('-f', '--families', metavar='<path>', nargs=1,
                     required=True,
                     help='path to the text file containing information'
                          ' about families (path to FAMILY101.txt)')
-parser.add_argument('-i', '--images', metavar='<path>', nargs=1,
+parser.add_argument('-d', '--dataset', metavar='<path>', nargs=1,
                     required=True,
-                    help='path to the root of the images directory'
+                    help='path to the root of the dataset directory'
                          ' (path to Family101_150x120)')
 parser.add_argument('-p', '--permdir', metavar='<path>', nargs=1,
                     required=True,
@@ -35,7 +36,7 @@ parser.add_argument('-p', '--permdir', metavar='<path>', nargs=1,
 
 args = parser.parse_args()
 families = args.families[0]
-images_dir = args.images[0]
+dataset_dir = args.dataset[0]
 perm_dir = args.permdir[0]
 
 # Parse text file into list of face images
@@ -53,10 +54,10 @@ for entry in families_contents.split('\r\n'):
             house_id = split_entries[0]
             role_id = split_entries[1]
             name = split_entries[2]
-            images_path = join(images_dir, family_id, name)
+            images_path = join(dataset_dir, family_id, name)
             # Some entries don't have images, ignore them
             if isdir(images_path):
-                for image_id in listdir(join(images_dir, family_id, name)):
+                for image_id in listdir(join(dataset_dir, family_id, name)):
                     if not image_id.startswith('.'):
                         face_images.append(FaceImage(family_id, house_id,
                                                      role_id, name, image_id))
